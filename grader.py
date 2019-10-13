@@ -28,6 +28,16 @@ with file('key.json', 'r') as f:
 with file(studentfile, 'r') as f:
     results = json.load(f)
 
+
+if not 'version' in results or results['version'] != key['version']:
+    print('The submitted quiz results are from a different version of this quiz.')
+    print('Please re-take the quiz following the link provided by your instructor!')
+    if printscores:
+        print('{"scores":{"Total":0}}')
+    sys.exit(0)
+
+key.pop('version')
+
 total = 0
 missed = []
 
@@ -38,7 +48,7 @@ for k, v in iter(sorted(key.iteritems(), key=lambda x: x[1]['question'])):
     if not k in results:
         missed.append(miss_str(v))
         continue
-
+    
     if isinstance(results[k], list):
         results[k].sort
         if results[k] != v['value']:
@@ -62,4 +72,4 @@ if len(missed) > 0:
 
 if printscores:
     print("""{"scores":{"Total":%d}}""" % total)
-
+    
