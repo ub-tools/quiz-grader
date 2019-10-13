@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 from __future__ import print_function
 
@@ -22,14 +22,14 @@ while i < len(sys.argv):
 
     i += 1
 
-with file('key.json', 'r') as f:
+with open('key.json', 'r') as f:
     key = json.load(f)
 
-with file(studentfile, 'r') as f:
+with open(studentfile, 'r') as f:
     results = json.load(f)
 
 
-if not 'version' in results or results['version'] != key['version']:
+if 'version' not in results or str(results['version']) != str(key['version']):
     print('The submitted quiz results are from a different version of this quiz.')
     print('Please re-take the quiz following the link provided by your instructor!')
     if printscores:
@@ -41,20 +41,22 @@ key.pop('version')
 total = 0
 missed = []
 
+
 def miss_str(v):
     return "q. %d: %s" % (v['question'], v['description'])
 
-for k, v in iter(sorted(key.iteritems(), key=lambda x: x[1]['question'])):
-    if not k in results:
+
+for k, v in sorted(key.items(), key=lambda x: x[1]['question']):
+    if k not in results:
         missed.append(miss_str(v))
         continue
-    
+
     if isinstance(results[k], list):
         results[k].sort
         if results[k] != v['value']:
             missed.append(miss_str(v))
             continue
-    elif isinstance(results[k], str) or isinstance(results[k], unicode):
+    elif isinstance(results[k], str):
         if results[k] != v['value']:
             missed.append(miss_str(v))
             continue
@@ -72,4 +74,3 @@ if len(missed) > 0:
 
 if printscores:
     print("""{"scores":{"Total":%d}}""" % total)
-    

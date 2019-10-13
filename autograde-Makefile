@@ -1,5 +1,4 @@
 all: untar
-	ls -l
 	./grader.py -A
 
 untar: autograde.tar
