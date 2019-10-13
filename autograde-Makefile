@@ -1,0 +1,8 @@
+all: untar
+	ls -l
+	./grader.py -A
+
+untar: autograde.tar
+	tar xf autograde.tar
+
+.PHONY: all untar
