@@ -22,10 +22,10 @@ while i < len(sys.argv):
 
     i += 1
 
-with open('key.json', 'r') as f:
+with open('key.json', 'r', encoding="utf-8") as f:
     key = json.load(f)
 
-with open(studentfile, 'r') as f:
+with open(studentfile, 'r', encoding="utf-8") as f:
     results = json.load(f)
 
 
